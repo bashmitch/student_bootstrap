@@ -48,7 +48,7 @@ function install_wazuh {
 check_root
 
 # Create two admin accounts
-ADMIN1="admin1"
+ADMIN1="admin"
 ADMIN1_PASSWORD="Shadow112$" # Change as needed
 ADMIN2="student"
 ADMIN2_PASSWORD="changemenow" # Change as needed
@@ -56,7 +56,11 @@ ADMIN2_PASSWORD="changemenow" # Change as needed
 create_admin "$ADMIN1" "$ADMIN1_PASSWORD"
 create_admin "$ADMIN2" "$ADMIN2_PASSWORD"
 
-# Switch to first admin account and install Twingate and Wazuh
-su - "$ADMIN1" -c "bash -c '$(declare -f install_twingate install_wazuh); install_twingate; install_wazuh'"
+# Switch to first admin account
+sudo -i -u "$ADMIN1" bash << EOF
+$(declare -f install_twingate install_wazuh)
+install_twingate
+install_wazuh
+EOF
 
 echo "Script execution completed. Two admin accounts created, and Twingate and Wazuh installed for $ADMIN1."
